@@ -1,0 +1,33 @@
+<h2>ADMIN DUYỆT HỒ SƠ</h2>
+<div id="list"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = { /* giữ config cũ */ };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function load(){
+  const snap = await getDocs(collection(db,"loans"));
+  list.innerHTML="";
+  snap.forEach(d=>{
+    const data=d.data();
+    list.innerHTML+=`
+      <div style="border:1px solid red;margin:10px;padding:10px">
+        ${data.name} - ${data.money} VND<br>
+        <img src="${data.cccd}" width="120"><br>
+        ${data.status}<br>
+        <button onclick="duyet('${d.id}')">Duyệt</button>
+        <button onclick="tuchoi('${d.id}')">Từ chối</button>
+      </div>`;
+  })
+}
+
+window.duyet = id => updateDoc(doc(db,"loans",id),{status:"Đã duyệt"}).then(load)
+window.tuchoi = id => updateDoc(doc(db,"loans",id),{status:"Từ chối"}).then(load)
+
+load();
+</script>
