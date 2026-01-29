@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vay Tiền Nhanh</title>
+<title>Web Vay Tiền</title>
 <style>
 body{font-family:Arial;background:linear-gradient(135deg,#1d2671,#c33764);margin:0}
 .container{max-width:400px;margin:40px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
@@ -11,47 +11,107 @@ h2{text-align:center;color:#1d2671}
 input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;font-size:15px}
 button{background:#1d2671;color:#fff;border:none;font-weight:bold}
 .result{background:#f1f1f1;padding:10px;border-radius:8px;margin-top:10px}
-.footer{text-align:center;font-size:13px;color:gray;margin-top:15px}
+.link{color:#1d2671;text-align:center;display:block;margin-top:8px;cursor:pointer}
+.userbox{text-align:center;margin-bottom:10px;font-weight:bold}
 </style>
 </head>
 <body>
 
 <div class="container">
-<h2>Đăng Ký Vay Tiền</h2>
 
-<input id="name" placeholder="Họ và tên">
-<input id="phone" placeholder="Số điện thoại">
-<input id="money" type="number" placeholder="Số tiền muốn vay" oninput="calc()">
+<div id="authSection">
+  <h2>Đăng Nhập</h2>
+  <input id="loginUser" placeholder="Tên tài khoản">
+  <input id="loginPass" type="password" placeholder="Mật khẩu">
+  <button onclick="login()">Đăng nhập</button>
+  <div class="link" onclick="showRegister()">Chưa có tài khoản? Đăng ký</div>
+</div>
 
-<select id="month" onchange="calc()">
-<option value="1">1 tháng</option>
-<option value="3">3 tháng</option>
-<option value="6">6 tháng</option>
-<option value="12">12 tháng</option>
-</select>
+<div id="registerSection" style="display:none">
+  <h2>Đăng Ký</h2>
+  <input id="regUser" placeholder="Tên tài khoản">
+  <input id="regPass" type="password" placeholder="Mật khẩu">
+  <button onclick="register()">Tạo tài khoản</button>
+  <div class="link" onclick="showLogin()">Đã có tài khoản? Đăng nhập</div>
+</div>
 
-<div class="result" id="result">Tổng tiền phải trả: 0 VNĐ</div>
+<div id="appSection" style="display:none">
+  <div class="userbox">Xin chào, <span id="username"></span></div>
 
-<button onclick="sendForm()">Gửi yêu cầu vay</button>
+  <input id="money" type="number" placeholder="Số tiền muốn vay" oninput="calc()">
 
-<div class="footer">Duyệt nhanh • Hỗ trợ 24/7</div>
+  <select id="month" onchange="calc()">
+    <option value="1">1 tháng</option>
+    <option value="3">3 tháng</option>
+    <option value="6">6 tháng</option>
+    <option value="12">12 tháng</option>
+  </select>
+
+  <div class="result" id="result">Tổng tiền phải trả: 0 VNĐ</div>
+
+  <button onclick="sendLoan()">Gửi yêu cầu vay</button>
+  <button onclick="logout()" style="background:#999;margin-top:6px">Đăng xuất</button>
+</div>
+
 </div>
 
 <script>
-function calc(){
-let money=parseInt(document.getElementById("money").value)||0;
-let month=parseInt(document.getElementById("month").value);
-let interest=0.2;
-let total=money+(money*interest);
-document.getElementById("result").innerHTML="Tổng tiền phải trả: "+total.toLocaleString()+" VNĐ ("+month+" tháng)";
+// Chuyển màn hình
+function showRegister(){authSection.style.display="none";registerSection.style.display="block";}
+function showLogin(){authSection.style.display="block";registerSection.style.display="none";}
+
+// Đăng ký
+function register(){
+  let u=regUser.value;
+  let p=regPass.value;
+  if(!u||!p){alert("Nhập đủ thông tin");return;}
+  localStorage.setItem("user_"+u,p);
+  alert("Tạo tài khoản thành công!");
+  showLogin();
 }
 
-function sendForm(){
-let name=document.getElementById("name").value;
-let phone=document.getElementById("phone").value;
-if(!name||!phone){alert("Nhập đủ thông tin");return;}
-alert("Yêu cầu vay đã gửi!");
+// Đăng nhập
+function login(){
+  let u=loginUser.value;
+  let p=loginPass.value;
+  let stored=localStorage.getItem("user_"+u);
+  if(stored===p){
+    localStorage.setItem("loggedUser",u);
+    loadApp();
+  }else alert("Sai tài khoản hoặc mật khẩu");
 }
+
+// Tải app sau login
+function loadApp(){
+  let u=localStorage.getItem("loggedUser");
+  if(u){
+    authSection.style.display="none";
+    registerSection.style.display="none";
+    appSection.style.display="block";
+    username.textContent=u;
+  }
+}
+
+// Đăng xuất
+function logout(){
+  localStorage.removeItem("loggedUser");
+  location.reload();
+}
+
+// Tính tiền vay
+function calc(){
+  let m=parseInt(money.value)||0;
+  let interest=0.2;
+  let total=m+(m*interest);
+  result.innerHTML="Tổng tiền phải trả: "+total.toLocaleString()+" VNĐ";
+}
+
+function sendLoan(){
+  alert("Yêu cầu vay đã gửi!");
+}
+
+// Kiểm tra login khi mở web
+loadApp();
 </script>
 
 </body>
