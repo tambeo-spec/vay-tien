@@ -57,7 +57,25 @@ img{
 <body>
 <div class="container">
 
-<h2>Thông tin vay</h2>
+  <div style="background:#ff4fa3;color:white;padding:15px;border-radius:12px;margin-bottom:15px">
+  <div>Đơn vị cho vay: <b id="showCompany"></b></div>
+  <div>Số tiền vay: <b id="showMoney"></b></div>
+
+  <label>Chọn kỳ hạn</label>
+  <select id="loanDays" onchange="calculateLoan()">
+    <option value="7">7 ngày</option>
+    <option value="14">14 ngày</option>
+    <option value="30">30 ngày</option>
+  </select>
+
+  <div>Lãi vay: <b id="interestMoney"></b></div>
+  <div>Phí dịch vụ: <b id="serviceFee"></b></div>
+  <div><b>Tổng phải trả: <span id="totalPay"></span></b></div>
+</div>
+
+<div id="paymentSchedule" style="background:white;padding:10px;border-radius:10px;margin-bottom:15px"></div>
+
+  <h2>Thông tin vay</h2>
 
 <div class="section">
 <label>Họ tên</label>
@@ -176,6 +194,47 @@ function nextStep(){
 
   window.location.href = "step2.html";
 }
+  function formatMoney(x){
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+}
+
+const company = localStorage.getItem("loanCompany") || "—";
+const money = parseInt(localStorage.getItem("loanAmount") || 0);
+
+showCompany.innerText = company;
+showMoney.innerText = formatMoney(money);
+
+function calculateLoan(){
+  const days = parseInt(loanDays.value);
+
+  let rate = 0;
+  if(days == 7) rate = 0.1;      // 10%
+  if(days == 14) rate = 0.15;    // 15%
+  if(days == 30) rate = 0.25;    // 25%
+
+  const interest = money * rate;
+  const service = money * 0.05; // phí dịch vụ 5%
+  const total = money + interest + service;
+
+  interestMoney.innerText = formatMoney(interest);
+  serviceFee.innerText = formatMoney(service);
+  totalPay.innerText = formatMoney(total);
+
+  // Lịch trả
+  const today = new Date();
+  today.setDate(today.getDate() + days);
+
+  paymentSchedule.innerHTML = `
+    <b>Lịch thanh toán</b><br>
+    Gốc vay: ${formatMoney(money)}<br>
+    Lãi: ${formatMoney(interest)}<br>
+    Phí dịch vụ: ${formatMoney(service)}<br>
+    <hr>
+    <b>Ngày thanh toán: ${today.toLocaleDateString()}</b>
+  `;
+}
+
+calculateLoan();
 </script>
 
 </body>
