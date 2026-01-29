@@ -1,74 +1,182 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thông tin vay - Bước 1</title>
+
 <style>
-select, input {
-  width: 100%;
-  padding: 12px;
-  margin: 6px 0;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 16px;
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
 }
-h3 {
-  margin-top: 18px;
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:15px;
+}
+h2{
+  text-align:center;
+}
+input, select{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border-radius:8px;
+  border:1px solid #ddd;
+  font-size:16px;
+}
+button{
+  width:100%;
+  padding:14px;
+  background:#ff4fa3;
+  color:white;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
+  margin-top:12px;
+}
+.section{
+  background:white;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+label{
+  font-weight:bold;
+}
+img{
+  width:100%;
+  margin-top:8px;
+  border-radius:8px;
 }
 </style>
 </head>
+
 <body>
-<div class="box">
-<h3>Thông tin vay</h3>
-<input placeholder="Họ tên">
-<input placeholder="SĐT">
-<input type="date">
-<input placeholder="CCCD">
-<input placeholder="Địa chỉ">
+<div class="container">
+
+<h2>Thông tin vay</h2>
+
+<div class="section">
+<label>Họ tên</label>
+<input type="text" id="name">
+
+<label>SĐT</label>
+<input type="tel" id="phone">
+
+<label>Ngày sinh</label>
+<input type="date" id="dob">
+
+<label>Số CCCD</label>
+<input type="text" id="cccd">
+
+<label>Địa chỉ</label>
+<input type="text" id="address">
+
+<label>Công việc</label>
+<input type="text" id="job">
+
+<label>Thu nhập/tháng</label>
+<input type="number" id="income">
+
+<label>Tỉnh thành</label>
+<input type="text" id="province">
+
+<label>Quận huyện</label>
+<input type="text" id="district">
+
+<label>Phường xã</label>
+<input type="text" id="ward">
+</div>
+
+<div class="section">
 <h3>Người tham chiếu 1</h3>
 <select id="ref1_relation">
-  <option value="">Chọn quan hệ</option>
-  <option>Bố</option>
-  <option>Mẹ</option>
-  <option>Anh trai</option>
-  <option>Chị gái</option>
-  <option>Đồng nghiệp</option>
-  <option>Bạn học</option>
+<option value="">Chọn quan hệ</option>
+<option>Bố</option><option>Mẹ</option>
+<option>Anh trai</option><option>Chị gái</option>
+<option>Đồng nghiệp</option><option>Bạn học</option>
 </select>
 <input type="text" id="ref1_name" placeholder="Họ tên">
 <input type="tel" id="ref1_phone" placeholder="SĐT">
 
 <h3>Người tham chiếu 2</h3>
 <select id="ref2_relation">
-  <option value="">Chọn quan hệ</option>
-  <option>Bố</option>
-  <option>Mẹ</option>
-  <option>Anh trai</option>
-  <option>Chị gái</option>
-  <option>Đồng nghiệp</option>
-  <option>Bạn học</option>
+<option value="">Chọn quan hệ</option>
+<option>Bố</option><option>Mẹ</option>
+<option>Anh trai</option><option>Chị gái</option>
+<option>Đồng nghiệp</option><option>Bạn học</option>
 </select>
 <input type="text" id="ref2_name" placeholder="Họ tên">
 <input type="tel" id="ref2_phone" placeholder="SĐT">
 
 <h3>Người tham chiếu 3</h3>
 <select id="ref3_relation">
-  <option value="">Chọn quan hệ</option>
-  <option>Bố</option>
-  <option>Mẹ</option>
-  <option>Anh trai</option>
-  <option>Chị gái</option>
-  <option>Đồng nghiệp</option>
-  <option>Bạn học</option>
+<option value="">Chọn quan hệ</option>
+<option>Bố</option><option>Mẹ</option>
+<option>Anh trai</option><option>Chị gái</option>
+<option>Đồng nghiệp</option><option>Bạn học</option>
 </select>
 <input type="text" id="ref3_name" placeholder="Họ tên">
 <input type="tel" id="ref3_phone" placeholder="SĐT">
-<input placeholder="Công việc">
-<input placeholder="Thu nhập/tháng">
-<select><option>Tỉnh thành</option></select>
-<select><option>Quận/Huyện</option></select>
-<select><option>Phường/Xã</option></select>
-
-<button onclick="location.href='step2.html'">Tiếp theo</button>
 </div>
+
+<div class="section">
+<h3>Ảnh CCCD</h3>
+
+<label>Chụp/Upload mặt trước CCCD</label>
+<input type="file" accept="image/*" capture="environment" id="cccd_front">
+<img id="preview_front">
+
+<label>Chụp/Upload mặt sau CCCD</label>
+<input type="file" accept="image/*" capture="environment" id="cccd_back">
+<img id="preview_back">
+</div>
+
+<button onclick="nextStep()">Tiếp tục</button>
+
+</div>
+
+<script>
+// Xem trước ảnh
+cccd_front.onchange = e => {
+  preview_front.src = URL.createObjectURL(e.target.files[0]);
+}
+cccd_back.onchange = e => {
+  preview_back.src = URL.createObjectURL(e.target.files[0]);
+}
+
+function nextStep(){
+  localStorage.setItem("step1", JSON.stringify({
+    name: name.value,
+    phone: phone.value,
+    dob: dob.value,
+    cccd: cccd.value,
+    address: address.value,
+    job: job.value,
+    income: income.value,
+    province: province.value,
+    district: district.value,
+    ward: ward.value,
+
+    ref1_relation: ref1_relation.value,
+    ref1_name: ref1_name.value,
+    ref1_phone: ref1_phone.value,
+
+    ref2_relation: ref2_relation.value,
+    ref2_name: ref2_name.value,
+    ref2_phone: ref2_phone.value,
+
+    ref3_relation: ref3_relation.value,
+    ref3_name: ref3_name.value,
+    ref3_phone: ref3_phone.value
+  }));
+
+  window.location.href = "step2.html";
+}
+</script>
+
 </body>
 </html>
