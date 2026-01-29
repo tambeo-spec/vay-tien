@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trang chính</title>
+<title>Chọn khoản vay</title>
 
 <style>
 body{
+  font-family: Arial, sans-serif;
   margin:0;
-  font-family:Arial, sans-serif;
-  background:#f4f4f4;
+  background:#f2f3f7;
 }
 .container{
   max-width:420px;
@@ -17,89 +17,126 @@ body{
   padding:15px;
 }
 
-/* Bảng tiền */
-.balance-card{
+/* KHUNG HỒNG */
+.card{
   background:#ff4fa3;
   color:white;
   padding:20px;
-  border-radius:16px;
+  border-radius:18px;
   text-align:center;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
-.balance-amount{
+.amount{
   font-size:26px;
   font-weight:bold;
-  margin:10px 0;
-}
-.withdraw-btn{
-  background:white;
-  color:#ff4fa3;
-  border:none;
-  padding:12px 20px;
-  border-radius:12px;
-  font-weight:bold;
-  font-size:16px;
+  margin:12px 0;
 }
 
-/* Khối thông tin */
-.info-box{
+input[type=range]{
+  width:100%;
+  margin-top:10px;
+}
+
+h3{
+  margin:20px 0 10px;
+}
+
+/* CÔNG TY */
+.company{
   background:white;
-  margin-top:15px;
-  padding:15px;
-  border-radius:12px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+  padding:14px;
+  border-radius:14px;
+  margin:10px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  cursor:pointer;
   font-size:14px;
 }
-.info-title{
-  font-weight:bold;
-  margin-bottom:8px;
-}
-.line{
-  margin:6px 0;
+.company:active{
+  transform:scale(0.97);
 }
 </style>
 </head>
 
 <body>
+   <!-- KHUNG TIỀN -->
+    <div class="wallet">
+        <h3>Số tiền có thể rút</h3>
+        <div class="money" id="money">0 VND</div>
+        <button class="btn" onclick="rutTien()">Rút tiền</button>
+    </div>
 <div class="container">
 
-<!-- Bảng tiền -->
-<div class="balance-card">
-  <div>Số tiền có thể rút</div>
-  <div class="balance-amount" id="userMoney">0 VND</div>
-  <button class="withdraw-btn" onclick="withdraw()">Rút tiền</button>
+<div class="card">
+  <div>Chọn số tiền vay</div>
+  <div class="amount" id="moneyDisplay">500,000 VND</div>
+  <input type="range" id="moneySlider" min="0" max="8" step="1" value="0">
 </div>
 
-<!-- Thông tin liên hệ -->
-<div class="info-box">
-  <div class="info-title">Hỗ trợ khách hàng</div>
-  <div class="line">📱 Zalo: 0123 456 789</div>
-  <div class="line">📘 Facebook: fb.com/hotro</div>
+<h3>Chọn đơn vị cho vay</h3>
+
+<div class="company" onclick="goLoan('FE Credit')">
+  <span>🏦 FE Credit</span><span>Vay nhanh</span>
 </div>
 
-<!-- Địa chỉ -->
-<div class="info-box">
-  <div class="info-title">Thông tin công ty</div>
-  <div class="line">📍 Địa chỉ: 123 Nguyễn Trãi, Hà Nội</div>
-  <div class="line">⏰ Làm việc: 8:00 - 18:00 (T2 - T7)</div>
-  <div class="line">✔ Hỗ trợ vay toàn quốc</div>
+<div class="company" onclick="goLoan('Home Credit')">
+  <span>🏦 Home Credit</span><span>Duyệt nhanh</span>
+</div>
+
+<div class="company" onclick="goLoan('Mirae Asset')">
+  <span>🏦 Mirae Asset</span><span>Lãi thấp</span>
+</div>
+
+<div class="company" onclick="goLoan('Lotte Finance')">
+  <span>🏦 Lotte Finance</span><span>Không thế chấp</span>
+</div>
+
+<div class="company" onclick="goLoan('OCB Bank')">
+  <span>🏦 OCB Bank</span><span>Hạn mức cao</span>
 </div>
 
 </div>
 
 <script>
-// Lấy tiền đã chọn từ trước (nếu có)
-const money = localStorage.getItem("loanAmount") || 0;
+const amounts = [
+  500000, 1000000, 1500000, 2000000,
+  4000000, 8000000, 12000000, 30000000, 50000000
+];
+
+const slider = document.getElementById("moneySlider");
+const display = document.getElementById("moneyDisplay");
 
 function formatMoney(x){
-  return parseInt(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+  return x.toLocaleString('vi-VN') + " VND";
 }
 
-userMoney.innerText = formatMoney(money);
-
-function withdraw(){
-  alert("Yêu cầu rút tiền đã được gửi!");
+// Khi kéo thanh
+slider.oninput = function(){
+  display.innerText = formatMoney(amounts[this.value]);
 }
+
+// Khi bấm công ty
+function goLoan(company){
+  localStorage.setItem("loanCompany", company);
+  localStorage.setItem("loanAmount", amounts[slider.value]);
+  window.location.href = "step1.html";
+}
+  <!-- HỖ TRỢ -->
+    <div class="box">
+        <h4>Hỗ trợ khách hàng</h4>
+        <div class="item">📱 Zalo: <b>0123 456 789</b></div>
+        <div class="item">📘 Facebook: fb.com/hotro</div>
+    </div>
+
+    <!-- CÔNG TY -->
+    <div class="box">
+        <h4>Thông tin công ty</h4>
+        <div class="item">📍 Địa chỉ: 123 Nguyễn Trãi, Hà Nội</div>
+        <div class="item">⏰ Làm việc: 8:00 – 18:00 (T2 - T7)</div>
+        <div class="item">✔ Hỗ trợ vay toàn quốc</div>
+    </div>
 </script>
 
 </body>
