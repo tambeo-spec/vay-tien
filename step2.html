@@ -1,22 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bước 2 - Nhận tiền</title>
+
 <style>
-body{font-family:Arial;margin:0;background:#f2f2f2}
-.box{padding:15px}
-input,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #ccc}
-button{background:#ff4da6;color:white;border:none}
+body{
+  font-family: Arial, sans-serif;
+  background:#f2f2f2;
+  margin:0;
+}
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:15px;
+}
+h2{text-align:center;}
+input{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border-radius:8px;
+  border:1px solid #ddd;
+  font-size:16px;
+}
+button{
+  width:100%;
+  padding:14px;
+  background:#ff4fa3;
+  color:white;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
+  margin-top:12px;
+}
+.section{
+  background:white;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
 </style>
 </head>
-<body>
-<div class="box">
-<h3>Thông tin nhận tiền</h3>
-<input placeholder="Số tài khoản">
-<input placeholder="Ngân hàng">
-<input placeholder="Chủ tài khoản">
 
-<button onclick="alert('Hồ sơ đã gửi')">Gửi hồ sơ vay</button>
+<body>
+<div class="container">
+
+<h2>Thông tin nhận tiền</h2>
+
+<div class="section">
+<input type="text" id="stk" placeholder="Số tài khoản">
+<input type="text" id="bank" placeholder="Ngân hàng">
+<input type="text" id="owner" placeholder="Chủ tài khoản">
 </div>
+
+<h2>Khu vực nhận tiền</h2>
+
+<div class="section">
+<input type="text" id="province2" placeholder="Tỉnh / Thành phố">
+<input type="text" id="district2" placeholder="Quận / Huyện">
+<input type="text" id="ward2" placeholder="Phường / Xã">
+</div>
+
+<button onclick="submitForm()">Gửi hồ sơ vay</button>
+
+</div>
+
+<script>
+function submitForm(){
+  const step1 = JSON.parse(localStorage.getItem("step1") || "{}");
+
+  const step2 = {
+    stk: stk.value,
+    bank: bank.value,
+    owner: owner.value,
+    province2: province2.value,
+    district2: district2.value,
+    ward2: ward2.value
+  };
+
+  const fullData = {...step1, ...step2};
+
+  console.log(fullData); // để sau gửi Firebase
+
+  alert("Gửi hồ sơ thành công!");
+  localStorage.clear();
+  window.location.href = "home.html";
+}
+</script>
+
 </body>
 </html>
