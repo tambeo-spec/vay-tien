@@ -2,125 +2,154 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ví tiền</title>
+<title>Vay tiền nhanh</title>
 <style>
-body { font-family: Arial; margin:0; background:#f5f5f5 }
-.container { max-width:500px; margin:auto; padding:15px }
+body{
+  font-family: Arial;
+  margin:0;
+  background:#fff;
+  color:#333;
+}
 
-.card {
-  background:#ff4da6;
-  color:white;
-  padding:20px;
-  border-radius:15px;
+.header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-top:15px;
+  padding:15px;
 }
 
-button {
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:white;
+.login-btn{
+  background:#ffe9a8;
+  padding:10px 15px;
+  border-radius:10px;
   font-weight:bold;
 }
 
-.loan-list { margin-top:20px }
-.loan-item {
-  background:white;
+.container{ padding:15px }
+
+.card{
+  background:#eef7fb;
+  padding:15px;
+  border-radius:15px;
+  margin-bottom:15px;
+}
+
+.amount{
+  font-size:22px;
+  font-weight:bold;
+  text-align:right;
+}
+
+.slider{
+  width:100%;
+}
+
+.phone-box{
+  background:#eef7fb;
+  padding:15px;
+  border-radius:15px;
+  margin-top:10px;
+}
+
+input{
+  width:100%;
   padding:12px;
-  margin:8px 0;
+  border:none;
+  background:none;
+  font-size:18px;
+}
+
+.notice{
+  background:#ffe6e6;
+  padding:10px;
   border-radius:10px;
-  box-shadow:0 0 5px rgba(0,0,0,0.1);
+  color:#c00;
+  margin:10px 0;
+}
+
+.agree{
+  display:flex;
+  gap:10px;
+  font-size:14px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:15px;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:bold;
+  background:#ffb800;
 }
 </style>
 </head>
 <body>
 
+<div class="header">
+  <div><b>CAYVANG</b></div>
+  <div class="login-btn">Đăng nhập</div>
+</div>
+
 <div class="container">
 
-<!-- LOGIN -->
-<div id="authBox">
-  <h2>Đăng nhập / Đăng ký</h2>
-  <input type="email" id="email" placeholder="Email"><br>
-  <input type="password" id="password" placeholder="Mật khẩu"><br>
-  <button onclick="register()">Đăng ký</button>
-  <button onclick="login()">Đăng nhập</button>
-</div>
+<h2>Vay Nhanh & Dễ Dàng</h2>
 
-<!-- APP -->
-<div id="appBox" style="display:none">
+<div class="card">
+  <div>Khoản vay</div>
+  <div class="amount" id="loanAmount">1,500,000 đ</div>
 
-  <div class="card">
-    <div>
-      <div>Số dư khả dụng</div>
-      <h2 id="balance">0 VND</h2>
-    </div>
-    <button onclick="withdraw()">Rút tiền</button>
+  <input type="range" min="500000" max="10000000" step="500000"
+         value="1500000" class="slider" id="loanSlider">
+
+  <div style="display:flex; justify-content:space-between; font-size:12px">
+    <span>500.000 đ</span>
+    <span>10.000.000 đ</span>
   </div>
 
-  <div class="loan-list">
-    <h3>Các bên cho vay</h3>
+  <hr>
 
-    <div class="loan-item">🏦 FE Credit</div>
-    <div class="loan-item">🏦 Home Credit</div>
-    <div class="loan-item">🏦 Mirae Asset</div>
-    <div class="loan-item">🏦 OCB Bank</div>
-    <div class="loan-item">🏦 Lotte Finance</div>
+  <div>Tổng thanh toán</div>
+  <div class="amount" id="totalPay">1,500,000 đ</div>
+</div>
 
-  </div>
+<div class="phone-box">
+  <div>Số Điện Thoại</div>
+  <input type="tel" placeholder="0XX XXX XXXX">
+</div>
 
-  <button onclick="logout()" style="margin-top:20px;background:#ddd">Đăng xuất</button>
+<div class="notice">
+Hãy đánh dấu đồng ý nếu bạn muốn tiếp tục
+</div>
+
+<div class="agree">
+  <input type="checkbox">
+  <div>Tôi đồng ý với Điều khoản và Chính sách bảo mật</div>
+</div>
+
+<button onclick="applyLoan()">Đăng ký vay</button>
 
 </div>
 
-</div>
+<script>
+const slider = document.getElementById("loanSlider");
+const amount = document.getElementById("loanAmount");
+const total = document.getElementById("totalPay");
 
-<!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAMVMlleglI5teSX_wnH74MByezCeJAqqU",
-  authDomain: "tambeo-b465a.firebaseapp.com",
-  projectId: "tambeo-b465a",
-  appId: "1:756559820351:web:a30b3d8f9596ad5c1baa8a"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-window.register = () => {
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-  .then(()=>alert("Đăng ký thành công"))
-  .catch(e=>alert(e.message));
+function formatMoney(x){
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " đ";
 }
 
-window.login = () => {
-  signInWithEmailAndPassword(auth, email.value, password.value)
-  .then(()=>alert("Đăng nhập thành công"))
-  .catch(e=>alert(e.message));
+slider.oninput = function(){
+  let money = parseInt(this.value);
+  amount.innerText = formatMoney(money);
+  total.innerText = formatMoney(money); // có thể tính lãi sau
 }
 
-window.logout = () => signOut(auth);
-
-window.withdraw = () => {
-  alert("Chức năng rút tiền đang xử lý...");
+function applyLoan(){
+  alert("Hồ sơ đã được gửi!");
 }
-
-onAuthStateChanged(auth, user=>{
-  if(user){
-    authBox.style.display="none";
-    appBox.style.display="block";
-    balance.innerText = "5,000,000 VND"; // tiền demo
-  }else{
-    authBox.style.display="block";
-    appBox.style.display="none";
-  }
-});
 </script>
 
 </body>
