@@ -1,122 +1,127 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Hệ thống vay tiền</title>
-  <style>
-    body { font-family: Arial; padding:20px; max-width:500px; margin:auto }
-    input, button { width:100%; padding:10px; margin:5px 0 }
-    .box { border:1px solid #ccc; padding:10px; margin:10px 0 }
-  </style>
+<meta charset="UTF-8">
+<title>Ví tiền</title>
+<style>
+body { font-family: Arial; margin:0; background:#f5f5f5 }
+.container { max-width:500px; margin:auto; padding:15px }
+
+.card {
+  background:#ff4da6;
+  color:white;
+  padding:20px;
+  border-radius:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:15px;
+}
+
+button {
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:white;
+  font-weight:bold;
+}
+
+.loan-list { margin-top:20px }
+.loan-item {
+  background:white;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  box-shadow:0 0 5px rgba(0,0,0,0.1);
+}
+</style>
 </head>
 <body>
 
-<h2>Đăng nhập / Đăng ký</h2>
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Mật khẩu">
-<button onclick="register()">Đăng ký</button>
-<button onclick="login()">Đăng nhập</button>
-<button onclick="logout()">Đăng xuất</button>
+<div class="container">
 
-<hr>
+<!-- LOGIN -->
+<div id="authBox">
+  <h2>Đăng nhập / Đăng ký</h2>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Mật khẩu"><br>
+  <button onclick="register()">Đăng ký</button>
+  <button onclick="login()">Đăng nhập</button>
+</div>
 
-<h2>Gửi yêu cầu vay</h2>
-<input type="text" id="name" placeholder="Họ tên">
-<input type="number" id="money" placeholder="Số tiền vay">
-<input type="file" id="cccd">
-<button onclick="sendLoan()">Gửi hồ sơ</button>
+<!-- APP -->
+<div id="appBox" style="display:none">
 
-<h3>Lịch sử vay</h3>
-<div id="history"></div>
+  <div class="card">
+    <div>
+      <div>Số dư khả dụng</div>
+      <h2 id="balance">0 VND</h2>
+    </div>
+    <button onclick="withdraw()">Rút tiền</button>
+  </div>
+
+  <div class="loan-list">
+    <h3>Các bên cho vay</h3>
+
+    <div class="loan-item">🏦 FE Credit</div>
+    <div class="loan-item">🏦 Home Credit</div>
+    <div class="loan-item">🏦 Mirae Asset</div>
+    <div class="loan-item">🏦 OCB Bank</div>
+    <div class="loan-item">🏦 Lotte Finance</div>
+
+  </div>
+
+  <button onclick="logout()" style="margin-top:20px;background:#ddd">Đăng xuất</button>
+
+</div>
+
+</div>
 
 <!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, getDocs } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAMVMlleglI5teSX_wnH74MByezCeJAqqU",
   authDomain: "tambeo-b465a.firebaseapp.com",
   projectId: "tambeo-b465a",
-  storageBucket: "tambeo-b465a.firebasestorage.app",
-  messagingSenderId: "756559820351",
   appId: "1:756559820351:web:a30b3d8f9596ad5c1baa8a"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
 
-// REGISTER
 window.register = () => {
   createUserWithEmailAndPassword(auth, email.value, password.value)
   .then(()=>alert("Đăng ký thành công"))
   .catch(e=>alert(e.message));
 }
 
-// LOGIN
 window.login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
   .then(()=>alert("Đăng nhập thành công"))
   .catch(e=>alert(e.message));
 }
 
-// LOGOUT
-window.logout = () => signOut(auth)
+window.logout = () => signOut(auth);
 
-// GỬI HỒ SƠ VAY
-window.sendLoan = async () => {
-  const user = auth.currentUser;
-  if(!user) return alert("Bạn chưa đăng nhập");
-
-  const file = cccd.files[0];
-  if(!file) return alert("Chưa chọn ảnh CCCD");
-
-  const storageRef = ref(storage, "cccd/" + user.uid + Date.now());
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-
-  await addDoc(collection(db, "loans"), {
-    uid: user.uid,
-    name: name.value,
-    money: Number(money.value),
-    cccd: url,
-    status: "Chờ duyệt",
-    time: new Date()
-  });
-
-  alert("Đã gửi hồ sơ!");
-  loadHistory();
+window.withdraw = () => {
+  alert("Chức năng rút tiền đang xử lý...");
 }
 
-// LOAD LỊCH SỬ
-async function loadHistory() {
-  const user = auth.currentUser;
-  if(!user) return;
-
-  const q = query(collection(db,"loans"), where("uid","==",user.uid));
-  const snap = await getDocs(q);
-
-  history.innerHTML = "";
-  snap.forEach(doc=>{
-    const d = doc.data();
-    history.innerHTML += `
-      <div class="box">
-        <b>${d.name}</b><br>
-        Số tiền: ${d.money} VND<br>
-        Trạng thái: <b>${d.status}</b>
-      </div>`;
-  });
-}
-
-onAuthStateChanged(auth, u => { if(u) loadHistory(); });
-
+onAuthStateChanged(auth, user=>{
+  if(user){
+    authBox.style.display="none";
+    appBox.style.display="block";
+    balance.innerText = "5,000,000 VND"; // tiền demo
+  }else{
+    authBox.style.display="block";
+    appBox.style.display="none";
+  }
+});
 </script>
+
 </body>
 </html>
