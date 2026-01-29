@@ -3,238 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thông tin vay - Bước 1</title>
-
+<title>Thông tin người vay</title>
 <style>
-body{
-  font-family: Arial, sans-serif;
-  background:#f2f2f2;
-  margin:0;
-}
-.container{
-  max-width:420px;
-  margin:auto;
-  padding:15px;
-}
-h2{
-  text-align:center;
-}
-input, select{
-  width:100%;
-  padding:12px;
-  margin:6px 0;
-  border-radius:8px;
-  border:1px solid #ddd;
-  font-size:16px;
-}
-button{
-  width:100%;
-  padding:14px;
-  background:#ff4fa3;
-  color:white;
-  border:none;
-  border-radius:10px;
-  font-size:18px;
-  margin-top:12px;
-}
-.section{
-  background:white;
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:15px;
-}
-label{
-  font-weight:bold;
-}
-img{
-  width:100%;
-  margin-top:8px;
-  border-radius:8px;
-}
+body{font-family:Arial;background:#f2f3f7;padding:15px}
+.box{background:white;padding:12px;border-radius:12px;margin-bottom:12px}
+input{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ddd}
+button{width:100%;padding:12px;background:#ff4fa3;color:white;border:none;border-radius:10px;font-size:16px}
 </style>
 </head>
-
 <body>
-<div class="container">
 
-  <div style="background:#ff4fa3;color:white;padding:15px;border-radius:12px;margin-bottom:15px">
-  <div>Đơn vị cho vay: <b id="showCompany"></b></div>
-  <div>Số tiền vay: <b id="showMoney"></b></div>
-
-  <label>Chọn kỳ hạn</label>
-  <select id="loanDays" onchange="calculateLoan()">
-    <option value="7">7 ngày</option>
-    <option value="14">14 ngày</option>
-    <option value="30">30 ngày</option>
-  </select>
-
-  <div>Lãi vay: <b id="interestMoney"></b></div>
-  <div>Phí dịch vụ: <b id="serviceFee"></b></div>
-  <div><b>Tổng phải trả: <span id="totalPay"></span></b></div>
+<div class="box">
+<h3>Thông tin cá nhân</h3>
+<input id="hoten" placeholder="Họ và tên">
+<input id="sdt" placeholder="Số điện thoại">
+<input id="cccd" placeholder="Số CCCD">
+<input id="congviec" placeholder="Công việc">
+<input id="thunhap" placeholder="Thu nhập">
 </div>
 
-<div id="paymentSchedule" style="background:white;padding:10px;border-radius:10px;margin-bottom:15px"></div>
-
-  <h2>Thông tin vay</h2>
-
-<div class="section">
-<label>Họ tên</label>
-<input type="text" id="name">
-
-<label>SĐT</label>
-<input type="tel" id="phone">
-
-<label>Ngày sinh</label>
-<input type="date" id="dob">
-
-<label>Số CCCD</label>
-<input type="text" id="cccd">
-
-<label>Địa chỉ</label>
-<input type="text" id="address">
-
-<label>Công việc</label>
-<input type="text" id="job">
-
-<label>Thu nhập/tháng</label>
-<input type="number" id="income">
-
-<label>Tỉnh thành</label>
-<input type="text" id="province">
-
-<label>Quận huyện</label>
-<input type="text" id="district">
-
-<label>Phường xã</label>
-<input type="text" id="ward">
-</div>
-
-<div class="section">
-<h3>Người tham chiếu 1</h3>
-<select id="ref1_relation">
-<option value="">Chọn quan hệ</option>
-<option>Bố</option><option>Mẹ</option>
-<option>Anh trai</option><option>Chị gái</option>
-<option>Đồng nghiệp</option><option>Bạn học</option>
-</select>
-<input type="text" id="ref1_name" placeholder="Họ tên">
-<input type="tel" id="ref1_phone" placeholder="SĐT">
-
-<h3>Người tham chiếu 2</h3>
-<select id="ref2_relation">
-<option value="">Chọn quan hệ</option>
-<option>Bố</option><option>Mẹ</option>
-<option>Anh trai</option><option>Chị gái</option>
-<option>Đồng nghiệp</option><option>Bạn học</option>
-</select>
-<input type="text" id="ref2_name" placeholder="Họ tên">
-<input type="tel" id="ref2_phone" placeholder="SĐT">
-
-<h3>Người tham chiếu 3</h3>
-<select id="ref3_relation">
-<option value="">Chọn quan hệ</option>
-<option>Bố</option><option>Mẹ</option>
-<option>Anh trai</option><option>Chị gái</option>
-<option>Đồng nghiệp</option><option>Bạn học</option>
-</select>
-<input type="text" id="ref3_name" placeholder="Họ tên">
-<input type="tel" id="ref3_phone" placeholder="SĐT">
-</div>
-
-<div class="section">
-<h3>Ảnh CCCD</h3>
-
-<label>Chụp/Upload mặt trước CCCD</label>
-<input type="file" accept="image/*" capture="environment" id="cccd_front">
-<img id="preview_front">
-
-<label>Chụp/Upload mặt sau CCCD</label>
-<input type="file" accept="image/*" capture="environment" id="cccd_back">
-<img id="preview_back">
-</div>
-
-<button onclick="nextStep()">Tiếp tục</button>
-
-</div>
+<button onclick="next()">Tiếp theo</button>
 
 <script>
-// Xem trước ảnh
-cccd_front.onchange = e => {
-  preview_front.src = URL.createObjectURL(e.target.files[0]);
+function next(){
+ localStorage.setItem("hoTen",hoten.value);
+ localStorage.setItem("sdt",sdt.value);
+ localStorage.setItem("cccd",cccd.value);
+ localStorage.setItem("congViec",congviec.value);
+ localStorage.setItem("thuNhap",thunhap.value);
+ window.location.href="step2.html";
 }
-cccd_back.onchange = e => {
-  preview_back.src = URL.createObjectURL(e.target.files[0]);
-}
-
-function nextStep(){
-  localStorage.setItem("step1", JSON.stringify({
-    name: name.value,
-    phone: phone.value,
-    dob: dob.value,
-    cccd: cccd.value,
-    address: address.value,
-    job: job.value,
-    income: income.value,
-    province: province.value,
-    district: district.value,
-    ward: ward.value,
-
-    ref1_relation: ref1_relation.value,
-    ref1_name: ref1_name.value,
-    ref1_phone: ref1_phone.value,
-
-    ref2_relation: ref2_relation.value,
-    ref2_name: ref2_name.value,
-    ref2_phone: ref2_phone.value,
-
-    ref3_relation: ref3_relation.value,
-    ref3_name: ref3_name.value,
-    ref3_phone: ref3_phone.value
-  }));
-
-  window.location.href = "step2.html";
-}
-  function formatMoney(x){
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
-}
-
-const company = localStorage.getItem("loanCompany") || "—";
-const money = parseInt(localStorage.getItem("loanAmount") || 0);
-
-showCompany.innerText = company;
-showMoney.innerText = formatMoney(money);
-
-function calculateLoan(){
-  const days = parseInt(loanDays.value);
-
-  let rate = 0;
-  if(days == 7) rate = 0.1;      // 10%
-  if(days == 14) rate = 0.15;    // 15%
-  if(days == 30) rate = 0.25;    // 25%
-
-  const interest = money * rate;
-  const service = money * 0.05; // phí dịch vụ 5%
-  const total = money + interest + service;
-
-  interestMoney.innerText = formatMoney(interest);
-  serviceFee.innerText = formatMoney(service);
-  totalPay.innerText = formatMoney(total);
-
-  // Lịch trả
-  const today = new Date();
-  today.setDate(today.getDate() + days);
-
-  paymentSchedule.innerHTML = `
-    <b>Lịch thanh toán</b><br>
-    Gốc vay: ${formatMoney(money)}<br>
-    Lãi: ${formatMoney(interest)}<br>
-    Phí dịch vụ: ${formatMoney(service)}<br>
-    <hr>
-    <b>Ngày thanh toán: ${today.toLocaleDateString()}</b>
-  `;
-}
-
-calculateLoan();
 </script>
 
 </body>
