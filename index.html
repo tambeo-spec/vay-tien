@@ -2,155 +2,120 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Vay tiền nhanh</title>
+<title>App Vay Tiền</title>
 <style>
-body{
-  font-family: Arial;
-  margin:0;
-  background:#fff;
-  color:#333;
-}
-
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px;
-}
-
-.login-btn{
-  background:#ffe9a8;
-  padding:10px 15px;
-  border-radius:10px;
-  font-weight:bold;
-}
-
-.container{ padding:15px }
-
-.card{
-  background:#eef7fb;
-  padding:15px;
-  border-radius:15px;
-  margin-bottom:15px;
-}
-
-.amount{
-  font-size:22px;
-  font-weight:bold;
-  text-align:right;
-}
-
-.slider{
-  width:100%;
-}
-
-.phone-box{
-  background:#eef7fb;
-  padding:15px;
-  border-radius:15px;
-  margin-top:10px;
-}
-
-input{
-  width:100%;
-  padding:12px;
-  border:none;
-  background:none;
-  font-size:18px;
-}
-
-.notice{
-  background:#ffe6e6;
-  padding:10px;
-  border-radius:10px;
-  color:#c00;
-  margin:10px 0;
-}
-
-.agree{
-  display:flex;
-  gap:10px;
-  font-size:14px;
-}
-
-button{
-  width:100%;
-  padding:14px;
-  margin-top:15px;
-  border:none;
-  border-radius:12px;
-  font-size:18px;
-  font-weight:bold;
-  background:#ffb800;
-}
+body{font-family:Arial;margin:0;background:#f2f2f2}
+.container{max-width:500px;margin:auto;padding:15px}
+input,select{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ccc}
+button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;font-weight:bold}
+.pink-card{background:#ff4da6;color:white;padding:20px;border-radius:15px;display:flex;justify-content:space-between;align-items:center}
+.company{background:white;padding:10px;margin:6px 0;border-radius:10px}
+.section{background:white;padding:15px;margin-top:15px;border-radius:12px}
+h3{margin-bottom:5px}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div><b>CAYVANG</b></div>
-  <div class="login-btn">Đăng nhập</div>
-</div>
-
 <div class="container">
 
-<h2>Vay Nhanh & Dễ Dàng</h2>
+<!-- LOGIN -->
+<div id="authBox">
+<h2>Đăng nhập / Đăng ký</h2>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Mật khẩu">
+<button onclick="register()">Đăng ký</button>
+<button onclick="login()">Đăng nhập</button>
+</div>
 
-<div class="card">
-  <div>Khoản vay</div>
-  <div class="amount" id="loanAmount">1,500,000 đ</div>
+<!-- APP -->
+<div id="appBox" style="display:none">
 
-  <input type="range" min="500000" max="10000000" step="500000"
-         value="1500000" class="slider" id="loanSlider">
-
-  <div style="display:flex; justify-content:space-between; font-size:12px">
-    <span>500.000 đ</span>
-    <span>10.000.000 đ</span>
+<div class="pink-card">
+  <div>
+    <div>Số tiền có thể vay</div>
+    <h2>10,000,000 VND</h2>
   </div>
-
-  <hr>
-
-  <div>Tổng thanh toán</div>
-  <div class="amount" id="totalPay">1,500,000 đ</div>
+  <button onclick="withdraw()">Rút tiền</button>
 </div>
 
-<div class="phone-box">
-  <div>Số Điện Thoại</div>
-  <input type="tel" placeholder="0XX XXX XXXX">
+<h3>Các công ty cho vay</h3>
+<div class="company">FE Credit — 10tr</div>
+<div class="company">Home Credit — 8tr</div>
+<div class="company">Mirae Asset — 15tr</div>
+<div class="company">Lotte Finance — 12tr</div>
+<div class="company">OCB Bank — 20tr</div>
+
+<!-- THÔNG TIN VAY -->
+<div class="section">
+<h3>Thông tin vay</h3>
+<input placeholder="Họ tên">
+<input placeholder="SĐT">
+<input type="date" placeholder="Ngày sinh">
+<input placeholder="Số CCCD">
+<input placeholder="Địa chỉ">
+<input placeholder="Tham chiếu 1">
+<input placeholder="Tham chiếu 2">
+<input placeholder="Tham chiếu 3">
+<input placeholder="Công việc">
+<input placeholder="Thu nhập/tháng">
+<select>
+<option>Tỉnh thành</option>
+<option>Hà Nội</option>
+<option>HCM</option>
+</select>
+<select>
+<option>Quận/Huyện</option>
+</select>
+<select>
+<option>Phường/Xã</option>
+</select>
 </div>
 
-<div class="notice">
-Hãy đánh dấu đồng ý nếu bạn muốn tiếp tục
+<!-- NGÂN HÀNG -->
+<div class="section">
+<h3>Thông tin nhận tiền</h3>
+<input placeholder="Số tài khoản">
+<input placeholder="Ngân hàng">
+<input placeholder="Chủ tài khoản">
+<button onclick="submitLoan()">Gửi hồ sơ vay</button>
 </div>
 
-<div class="agree">
-  <input type="checkbox">
-  <div>Tôi đồng ý với Điều khoản và Chính sách bảo mật</div>
-</div>
-
-<button onclick="applyLoan()">Đăng ký vay</button>
+<button onclick="logout()" style="background:#ddd">Đăng xuất</button>
 
 </div>
+</div>
 
-<script>
-const slider = document.getElementById("loanSlider");
-const amount = document.getElementById("loanAmount");
-const total = document.getElementById("totalPay");
+<!-- FIREBASE LOGIN -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-function formatMoney(x){
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " đ";
-}
+const firebaseConfig = {
+  apiKey: "AIzaSyAMVMlleglI5teSX_wnH74MByezCeJAqqU",
+  authDomain: "tambeo-b465a.firebaseapp.com",
+  projectId: "tambeo-b465a",
+  appId: "1:756559820351:web:a30b3d8f9596ad5c1baa8a"
+};
 
-slider.oninput = function(){
-  let money = parseInt(this.value);
-  amount.innerText = formatMoney(money);
-  total.innerText = formatMoney(money); // có thể tính lãi sau
-}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-function applyLoan(){
-  alert("Hồ sơ đã được gửi!");
-}
+window.register=()=>createUserWithEmailAndPassword(auth,email.value,password.value)
+.then(()=>alert("Đăng ký thành công")).catch(e=>alert(e.message));
+
+window.login=()=>signInWithEmailAndPassword(auth,email.value,password.value)
+.then(()=>alert("Đăng nhập thành công")).catch(e=>alert(e.message));
+
+window.logout=()=>signOut(auth);
+
+window.withdraw=()=>alert("Đang xử lý rút tiền...");
+
+window.submitLoan=()=>alert("Hồ sơ đã gửi thành công!");
+
+onAuthStateChanged(auth,user=>{
+ if(user){authBox.style.display="none";appBox.style.display="block";}
+ else{authBox.style.display="block";appBox.style.display="none";}
+});
 </script>
-
 </body>
 </html>
