@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thông tin ngân hàng</title>
+<title>Nhận tiền</title>
 <style>
-body{font-family:Arial;background:#f2f3f7;margin:0;padding:15px}
-.box{background:white;padding:15px;border-radius:12px;margin-bottom:12px}
+body{font-family:Arial;background:#f2f3f7;padding:15px}
+.box{background:white;padding:12px;border-radius:12px;margin-bottom:12px}
 input{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ddd}
 button{width:100%;padding:12px;background:#ff4fa3;color:white;border:none;border-radius:10px;font-size:16px}
 </style>
@@ -14,56 +14,26 @@ button{width:100%;padding:12px;background:#ff4fa3;color:white;border:none;border
 <body>
 
 <div class="box">
-<h3>Thông tin nhận tiền</h3>
+<h3>Thông tin ngân hàng</h3>
 <input id="stk" placeholder="Số tài khoản">
 <input id="bank" placeholder="Ngân hàng">
 <input id="namebank" placeholder="Tên chủ tài khoản">
 </div>
 
-<button onclick="guiHoSo()">Gửi hồ sơ vay</button>
-
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<button onclick="gui()">Gửi hồ sơ vay</button>
 
 <script>
-const firebaseConfig = {
-  apiKey: "DÁN_API_KEY_CỦA_BẠN",
-  authDomain: "DÁN_PROJECT.firebaseapp.com",
-  projectId: "DÁN_PROJECT_ID",
-  storageBucket: "DÁN_PROJECT.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-function guiHoSo(){
-
-  const data = {
-    hoTen: localStorage.getItem("hoTen"),
-    sdt: localStorage.getItem("sdt"),
-    cccd: localStorage.getItem("cccd"),
-    congViec: localStorage.getItem("congViec"),
-    thuNhap: localStorage.getItem("thuNhap"),
-    thamChieu1: localStorage.getItem("tc1"),
-    thamChieu2: localStorage.getItem("tc2"),
-    thamChieu3: localStorage.getItem("tc3"),
-    stk: document.getElementById("stk").value,
-    bank: document.getElementById("bank").value,
-    tenBank: document.getElementById("namebank").value,
-    soTien: localStorage.getItem("loanAmount"),
-    congTy: localStorage.getItem("loanCompany"),
-    time: new Date()
-  };
-
-  db.collection("hosovay").add(data).then(()=>{
-    alert("Gửi hồ sơ thành công!");
-    window.location.href="home.html";
-  }).catch(e=>{
-    alert("Lỗi gửi hồ sơ");
-  });
+function gui(){
+ const data={
+   hoten:localStorage.getItem("hoTen"),
+   sdt:localStorage.getItem("sdt"),
+   sotien:localStorage.getItem("loanAmount"),
+   kyhan:localStorage.getItem("kyHan"),
+   stk:stk.value,
+   bank:bank.value
+ }
+ console.log(data);
+ alert("Hồ sơ đã lưu (demo)");
 }
 </script>
 
