@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vay Tiền Nhanh</title>
+<style>
+body{font-family:Arial;background:linear-gradient(135deg,#1d2671,#c33764);margin:0}
+.container{max-width:400px;margin:40px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
+h2{text-align:center;color:#1d2671}
+input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;font-size:15px}
+button{background:#1d2671;color:#fff;border:none;font-weight:bold}
+.result{background:#f1f1f1;padding:10px;border-radius:8px;margin-top:10px}
+.footer{text-align:center;font-size:13px;color:gray;margin-top:15px}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Đăng Ký Vay Tiền</h2>
+
+<input id="name" placeholder="Họ và tên">
+<input id="phone" placeholder="Số điện thoại">
+<input id="money" type="number" placeholder="Số tiền muốn vay" oninput="calc()">
+
+<select id="month" onchange="calc()">
+<option value="1">1 tháng</option>
+<option value="3">3 tháng</option>
+<option value="6">6 tháng</option>
+<option value="12">12 tháng</option>
+</select>
+
+<div class="result" id="result">Tổng tiền phải trả: 0 VNĐ</div>
+
+<button onclick="sendForm()">Gửi yêu cầu vay</button>
+
+<div class="footer">Duyệt nhanh • Hỗ trợ 24/7</div>
+</div>
+
+<script>
+function calc(){
+let money=parseInt(document.getElementById("money").value)||0;
+let month=parseInt(document.getElementById("month").value);
+let interest=0.2;
+let total=money+(money*interest);
+document.getElementById("result").innerHTML="Tổng tiền phải trả: "+total.toLocaleString()+" VNĐ ("+month+" tháng)";
+}
+
+function sendForm(){
+let name=document.getElementById("name").value;
+let phone=document.getElementById("phone").value;
+if(!name||!phone){alert("Nhập đủ thông tin");return;}
+alert("Yêu cầu vay đã gửi!");
+}
+</script>
+
+</body>
+</html>
