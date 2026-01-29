@@ -1,33 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chọn khoản vay</title>
+
 <style>
-body{font-family:Arial;margin:0;background:#f2f2f2}
-.wrap{padding:15px}
-.card{background:#ff4da6;color:white;padding:20px;border-radius:15px;display:flex;justify-content:space-between}
-.company{background:white;padding:12px;border-radius:10px;margin:8px 0}
-button{padding:10px;border:none;border-radius:8px}
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#f5f5f5;
+}
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:15px;
+}
+.card{
+  background:#ff4fa3;
+  color:white;
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+}
+.amount{
+  font-size:24px;
+  font-weight:bold;
+  margin:10px 0;
+}
+input[type=range]{
+  width:100%;
+}
+.company{
+  background:white;
+  padding:14px;
+  border-radius:12px;
+  margin:10px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  cursor:pointer;
+}
+.company:active{
+  transform:scale(0.98);
+}
+h3{
+  margin-top:20px;
+}
 </style>
 </head>
+
 <body>
-<div class="wrap">
+<div class="container">
+
 <div class="card">
-  <div>
-    <div>Số tiền có thể vay</div>
-    <h2>10,000,000 VND</h2>
-  </div>
-  <button onclick="alert('Đang xử lý')">Rút tiền</button>
+  <div>Chọn số tiền vay</div>
+  <div class="amount" id="moneyDisplay">500,000 VND</div>
+
+  <input type="range" id="moneySlider" min="0" max="8" step="1" value="0">
 </div>
 
-<h3>Các công ty cho vay</h3>
-<div class="company">FE Credit — 10tr</div>
-<div class="company">Home Credit — 8tr</div>
-<div class="company">Mirae Asset — 15tr</div>
-<div class="company">Lotte Finance — 12tr</div>
-<div class="company">OCB Bank — 20tr</div>
+<h3>Chọn đơn vị cho vay</h3>
 
-<button onclick="location.href='step1.html'" style="width:100%;margin-top:15px;background:#ff4da6;color:white">Tiếp tục vay</button>
+<div class="company" onclick="goLoan('FE Credit')">
+  <span>🏦 FE Credit</span>
+  <span>Vay nhanh</span>
 </div>
+
+<div class="company" onclick="goLoan('Home Credit')">
+  <span>🏦 Home Credit</span>
+  <span>Duyệt nhanh</span>
+</div>
+
+<div class="company" onclick="goLoan('Mirae Asset')">
+  <span>🏦 Mirae Asset</span>
+  <span>Lãi thấp</span>
+</div>
+
+<div class="company" onclick="goLoan('Lotte Finance')">
+  <span>🏦 Lotte Finance</span>
+  <span>Không thế chấp</span>
+</div>
+
+<div class="company" onclick="goLoan('OCB Bank')">
+  <span>🏦 OCB Bank</span>
+  <span>Hạn mức cao</span>
+</div>
+
+</div>
+
+<script>
+const amounts = [
+  500000, 1000000, 1500000, 2000000,
+  4000000, 8000000, 12000000, 30000000, 50000000
+];
+
+const slider = document.getElementById("moneySlider");
+const display = document.getElementById("moneyDisplay");
+
+function formatMoney(x){
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+}
+
+slider.oninput = function(){
+  display.innerText = formatMoney(amounts[this.value]);
+}
+
+function goLoan(company){
+  localStorage.setItem("loanCompany", company);
+  localStorage.setItem("loanAmount", amounts[slider.value]);
+  window.location.href = "step1.html";
+}
+</script>
+
 </body>
 </html>
