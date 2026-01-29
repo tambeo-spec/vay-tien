@@ -3,10 +3,17 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{font-family:Arial;margin:0;background:#f2f2f2}
-.box{padding:15px}
-input,select,button{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #ccc}
-button{background:#ff4da6;color:white;border:none}
+select, input {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+h3 {
+  margin-top: 18px;
+}
 </style>
 </head>
 <body>
@@ -17,9 +24,44 @@ button{background:#ff4da6;color:white;border:none}
 <input type="date">
 <input placeholder="CCCD">
 <input placeholder="Địa chỉ">
-<input placeholder="Tham chiếu 1">
-<input placeholder="Tham chiếu 2">
-<input placeholder="Tham chiếu 3">
+<h3>Người tham chiếu 1</h3>
+<select id="ref1_relation">
+  <option value="">Chọn quan hệ</option>
+  <option>Bố</option>
+  <option>Mẹ</option>
+  <option>Anh trai</option>
+  <option>Chị gái</option>
+  <option>Đồng nghiệp</option>
+  <option>Bạn học</option>
+</select>
+<input type="text" id="ref1_name" placeholder="Họ tên">
+<input type="tel" id="ref1_phone" placeholder="SĐT">
+
+<h3>Người tham chiếu 2</h3>
+<select id="ref2_relation">
+  <option value="">Chọn quan hệ</option>
+  <option>Bố</option>
+  <option>Mẹ</option>
+  <option>Anh trai</option>
+  <option>Chị gái</option>
+  <option>Đồng nghiệp</option>
+  <option>Bạn học</option>
+</select>
+<input type="text" id="ref2_name" placeholder="Họ tên">
+<input type="tel" id="ref2_phone" placeholder="SĐT">
+
+<h3>Người tham chiếu 3</h3>
+<select id="ref3_relation">
+  <option value="">Chọn quan hệ</option>
+  <option>Bố</option>
+  <option>Mẹ</option>
+  <option>Anh trai</option>
+  <option>Chị gái</option>
+  <option>Đồng nghiệp</option>
+  <option>Bạn học</option>
+</select>
+<input type="text" id="ref3_name" placeholder="Họ tên">
+<input type="tel" id="ref3_phone" placeholder="SĐT">
 <input placeholder="Công việc">
 <input placeholder="Thu nhập/tháng">
 <select><option>Tỉnh thành</option></select>
