@@ -88,6 +88,41 @@ function submitForm(){
   localStorage.clear();
   window.location.href = "home.html";
 }
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAMVMlleglI5teSX_wnH74MByezCeJAqqU",
+  authDomain: "tambeo-b465a.firebaseapp.com",
+  projectId: "tambeo-b465a",
+  storageBucket: "tambeo-b465a.firebasestorage.app",
+  messagingSenderId: "756559820351",
+  appId: "1:756559820351:web:a30b3d8f9596ad5c1baa8a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.guiHoSo = async function(){
+
+  const data = {
+    hoTen: document.getElementById("hoten").value,
+    sdt: document.getElementById("sdt").value,
+    cccd: document.getElementById("cccd").value,
+    diaChi: document.getElementById("diachi").value,
+    congViec: document.getElementById("congviec").value,
+    thuNhap: document.getElementById("thunhap").value,
+    soTaiKhoan: document.getElementById("stk").value,
+    nganHang: document.getElementById("nganhang").value,
+    soTienVay: localStorage.getItem("loanAmount"),
+    congTy: localStorage.getItem("loanCompany"),
+    thoiGian: new Date().toLocaleString()
+  };
+
+  await addDoc(collection(db, "hosovay"), data);
+  alert("Đã gửi hồ sơ cho admin!");
+}
 </script>
 
 </body>
