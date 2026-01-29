@@ -3,50 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chọn khoản vay</title>
+<title>Trang chính</title>
 
 <style>
 body{
-  font-family: Arial, sans-serif;
   margin:0;
-  background:#f5f5f5;
+  font-family:Arial, sans-serif;
+  background:#f4f4f4;
 }
 .container{
   max-width:420px;
   margin:auto;
   padding:15px;
 }
-.card{
+
+/* Bảng tiền */
+.balance-card{
   background:#ff4fa3;
   color:white;
   padding:20px;
-  border-radius:15px;
+  border-radius:16px;
   text-align:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
-.amount{
-  font-size:24px;
+.balance-amount{
+  font-size:26px;
   font-weight:bold;
   margin:10px 0;
 }
-input[type=range]{
-  width:100%;
-}
-.company{
+.withdraw-btn{
   background:white;
-  padding:14px;
+  color:#ff4fa3;
+  border:none;
+  padding:12px 20px;
   border-radius:12px;
-  margin:10px 0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  cursor:pointer;
+  font-weight:bold;
+  font-size:16px;
 }
-.company:active{
-  transform:scale(0.98);
+
+/* Khối thông tin */
+.info-box{
+  background:white;
+  margin-top:15px;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.06);
+  font-size:14px;
 }
-h3{
-  margin-top:20px;
+.info-title{
+  font-weight:bold;
+  margin-bottom:8px;
+}
+.line{
+  margin:6px 0;
 }
 </style>
 </head>
@@ -54,63 +63,42 @@ h3{
 <body>
 <div class="container">
 
-<div class="card">
-  <div>Chọn số tiền vay</div>
-  <div class="amount" id="moneyDisplay">500,000 VND</div>
-
-  <input type="range" id="moneySlider" min="0" max="8" step="1" value="0">
+<!-- Bảng tiền -->
+<div class="balance-card">
+  <div>Số tiền có thể rút</div>
+  <div class="balance-amount" id="userMoney">0 VND</div>
+  <button class="withdraw-btn" onclick="withdraw()">Rút tiền</button>
 </div>
 
-<h3>Chọn đơn vị cho vay</h3>
-
-<div class="company" onclick="goLoan('FE Credit')">
-  <span>🏦 FE Credit</span>
-  <span>Vay nhanh</span>
+<!-- Thông tin liên hệ -->
+<div class="info-box">
+  <div class="info-title">Hỗ trợ khách hàng</div>
+  <div class="line">📱 Zalo: 0123 456 789</div>
+  <div class="line">📘 Facebook: fb.com/hotro</div>
 </div>
 
-<div class="company" onclick="goLoan('Home Credit')">
-  <span>🏦 Home Credit</span>
-  <span>Duyệt nhanh</span>
-</div>
-
-<div class="company" onclick="goLoan('Mirae Asset')">
-  <span>🏦 Mirae Asset</span>
-  <span>Lãi thấp</span>
-</div>
-
-<div class="company" onclick="goLoan('Lotte Finance')">
-  <span>🏦 Lotte Finance</span>
-  <span>Không thế chấp</span>
-</div>
-
-<div class="company" onclick="goLoan('OCB Bank')">
-  <span>🏦 OCB Bank</span>
-  <span>Hạn mức cao</span>
+<!-- Địa chỉ -->
+<div class="info-box">
+  <div class="info-title">Thông tin công ty</div>
+  <div class="line">📍 Địa chỉ: 123 Nguyễn Trãi, Hà Nội</div>
+  <div class="line">⏰ Làm việc: 8:00 - 18:00 (T2 - T7)</div>
+  <div class="line">✔ Hỗ trợ vay toàn quốc</div>
 </div>
 
 </div>
 
 <script>
-const amounts = [
-  500000, 1000000, 1500000, 2000000,
-  4000000, 8000000, 12000000, 30000000, 50000000
-];
-
-const slider = document.getElementById("moneySlider");
-const display = document.getElementById("moneyDisplay");
+// Lấy tiền đã chọn từ trước (nếu có)
+const money = localStorage.getItem("loanAmount") || 0;
 
 function formatMoney(x){
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+  return parseInt(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
 }
 
-slider.oninput = function(){
-  display.innerText = formatMoney(amounts[this.value]);
-}
+userMoney.innerText = formatMoney(money);
 
-function goLoan(company){
-  localStorage.setItem("loanCompany", company);
-  localStorage.setItem("loanAmount", amounts[slider.value]);
-  window.location.href = "step1.html";
+function withdraw(){
+  alert("Yêu cầu rút tiền đã được gửi!");
 }
 </script>
 
