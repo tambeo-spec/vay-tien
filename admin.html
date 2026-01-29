@@ -1,33 +1,103 @@
-<h2>ADMIN DUYỆT HỒ SƠ</h2>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin duyệt vay</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#f2f3f7;
+  padding:15px;
+}
+h2{
+  text-align:center;
+}
+.card{
+  background:white;
+  padding:15px;
+  border-radius:14px;
+  margin:12px 0;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  font-size:14px;
+}
+.btn{
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  margin-right:5px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.approve{background:#28a745;color:white;}
+.delete{background:#dc3545;color:white;}
+</style>
+</head>
+
+<body>
+
+<h2>📋 Danh sách hồ sơ vay</h2>
 <div id="list"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = { /* giữ config cũ */ };
+const firebaseConfig = {
+  apiKey: "AIzaSyAMVMlleglI5teSX_wnH74MByezCeJAqqU",
+  authDomain: "tambeo-b465a.firebaseapp.com",
+  projectId: "tambeo-b465a",
+  storageBucket: "tambeo-b465a.firebasestorage.app",
+  messagingSenderId: "756559820351",
+  appId: "1:756559820351:web:a30b3d8f9596ad5c1baa8a"
+};
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function load(){
-  const snap = await getDocs(collection(db,"loans"));
-  list.innerHTML="";
-  snap.forEach(d=>{
-    const data=d.data();
-    list.innerHTML+=`
-      <div style="border:1px solid red;margin:10px;padding:10px">
-        ${data.name} - ${data.money} VND<br>
-        <img src="${data.cccd}" width="120"><br>
-        ${data.status}<br>
-        <button onclick="duyet('${d.id}')">Duyệt</button>
-        <button onclick="tuchoi('${d.id}')">Từ chối</button>
-      </div>`;
-  })
+const listDiv = document.getElementById("list");
+
+async function loadData(){
+  const querySnapshot = await getDocs(collection(db, "loans"));
+  listDiv.innerHTML = "";
+
+  querySnapshot.forEach((docSnap)=>{
+    const data = docSnap.data();
+
+    const card = document.createElement("div");
+    card.className="card";
+    card.innerHTML = `
+      <b>👤 ${data.name}</b><br>
+      💰 Số tiền: ${Number(data.amount).toLocaleString('vi-VN')} VND<br>
+      📱 SĐT: ${data.phone}<br>
+      🏦 Ngân hàng: ${data.bank}<br>
+      📌 Trạng thái: <b>${data.status || "Chờ duyệt"}</b><br><br>
+      <button class="btn approve">Duyệt</button>
+      <button class="btn delete">Xóa</button>
+    `;
+
+    // Duyệt hồ sơ
+    card.querySelector(".approve").onclick = async ()=>{
+      await updateDoc(doc(db, "loans", docSnap.id), {
+        status:"Đã duyệt"
+      });
+      loadData();
+    };
+
+    // Xóa hồ sơ
+    card.querySelector(".delete").onclick = async ()=>{
+      await deleteDoc(doc(db, "loans", docSnap.id));
+      loadData();
+    };
+
+    listDiv.appendChild(card);
+  });
 }
 
-window.duyet = id => updateDoc(doc(db,"loans",id),{status:"Đã duyệt"}).then(load)
-window.tuchoi = id => updateDoc(doc(db,"loans",id),{status:"Từ chối"}).then(load)
-
-load();
+loadData();
 </script>
+
+</body>
+</html>
