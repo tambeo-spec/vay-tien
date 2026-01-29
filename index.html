@@ -1,87 +1,170 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Vay Tiền</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FinLoan - Vay tiền online</title>
+
 <style>
-body{font-family:Arial;background:linear-gradient(135deg,#1d2671,#c33764);margin:0}
-.container{max-width:400px;margin:40px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
-h2{text-align:center;color:#1d2671}
-input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc;font-size:15px}
-button{background:#1d2671;color:#fff;border:none;font-weight:bold}
-.result{background:#f1f1f1;padding:10px;border-radius:8px;margin-top:10px}
-.link{color:#1d2671;text-align:center;display:block;margin-top:8px;cursor:pointer}
-.userbox{text-align:center;margin-bottom:10px;font-weight:bold}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#f4f6fb;
+}
+
+/* Header */
+.header{
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+  padding:18px;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+/* Container */
+.container{
+  max-width:420px;
+  margin:20px auto;
+  padding:15px;
+}
+
+/* Card */
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  margin-bottom:18px;
+}
+
+/* Inputs */
+input,select{
+  width:100%;
+  padding:13px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:15px;
+}
+
+/* Button */
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:#fff;
+  font-size:16px;
+  font-weight:bold;
+  margin-top:8px;
+  box-shadow:0 4px 10px rgba(0,114,255,0.3);
+}
+
+/* Result box */
+.result{
+  background:#eef3ff;
+  padding:12px;
+  border-radius:10px;
+  margin-top:10px;
+  font-weight:bold;
+  text-align:center;
+  color:#203a43;
+}
+
+/* User */
+.userbox{
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:8px;
+  color:#2c5364;
+}
+
+/* Links */
+.link{
+  text-align:center;
+  margin-top:8px;
+  color:#0072ff;
+  cursor:pointer;
+  font-size:14px;
+}
 </style>
 </head>
+
 <body>
+
+<div class="header">FinLoan • Vay tiền 24/7</div>
 
 <div class="container">
 
-<div id="authSection">
-  <h2>Đăng Nhập</h2>
+<!-- LOGIN -->
+<div class="card" id="authSection">
+  <h3>Đăng nhập</h3>
   <input id="loginUser" placeholder="Tên tài khoản">
   <input id="loginPass" type="password" placeholder="Mật khẩu">
   <button onclick="login()">Đăng nhập</button>
   <div class="link" onclick="showRegister()">Chưa có tài khoản? Đăng ký</div>
 </div>
 
-<div id="registerSection" style="display:none">
-  <h2>Đăng Ký</h2>
+<!-- REGISTER -->
+<div class="card" id="registerSection" style="display:none">
+  <h3>Tạo tài khoản</h3>
   <input id="regUser" placeholder="Tên tài khoản">
   <input id="regPass" type="password" placeholder="Mật khẩu">
-  <button onclick="register()">Tạo tài khoản</button>
+  <button onclick="register()">Đăng ký</button>
   <div class="link" onclick="showLogin()">Đã có tài khoản? Đăng nhập</div>
 </div>
 
+<!-- APP -->
 <div id="appSection" style="display:none">
-  <div class="userbox">Xin chào, <span id="username"></span></div>
+  <div class="card">
+    <div class="userbox">Xin chào, <span id="username"></span></div>
+  </div>
 
-  <input id="money" type="number" placeholder="Số tiền muốn vay" oninput="calc()">
+  <div class="card">
+    <h3>Đăng ký khoản vay</h3>
 
-  <select id="month" onchange="calc()">
-    <option value="1">1 tháng</option>
-    <option value="3">3 tháng</option>
-    <option value="6">6 tháng</option>
-    <option value="12">12 tháng</option>
-  </select>
+    <input id="money" type="number" placeholder="Số tiền muốn vay (VNĐ)" oninput="calc()">
 
-  <div class="result" id="result">Tổng tiền phải trả: 0 VNĐ</div>
+    <select id="month" onchange="calc()">
+      <option value="1">1 tháng</option>
+      <option value="3">3 tháng</option>
+      <option value="6">6 tháng</option>
+      <option value="12">12 tháng</option>
+    </select>
 
-  <button onclick="sendLoan()">Gửi yêu cầu vay</button>
-  <button onclick="logout()" style="background:#999;margin-top:6px">Đăng xuất</button>
+    <div class="result" id="result">Tổng tiền phải trả: 0 VNĐ</div>
+
+    <button onclick="sendLoan()">Gửi yêu cầu vay</button>
+    <button onclick="logout()" style="background:#aaa;margin-top:6px">Đăng xuất</button>
+  </div>
 </div>
 
 </div>
 
 <script>
-// Chuyển màn hình
 function showRegister(){authSection.style.display="none";registerSection.style.display="block";}
 function showLogin(){authSection.style.display="block";registerSection.style.display="none";}
 
-// Đăng ký
 function register(){
-  let u=regUser.value;
-  let p=regPass.value;
+  let u=regUser.value,p=regPass.value;
   if(!u||!p){alert("Nhập đủ thông tin");return;}
   localStorage.setItem("user_"+u,p);
   alert("Tạo tài khoản thành công!");
   showLogin();
 }
 
-// Đăng nhập
 function login(){
-  let u=loginUser.value;
-  let p=loginPass.value;
-  let stored=localStorage.getItem("user_"+u);
-  if(stored===p){
+  let u=loginUser.value,p=loginPass.value;
+  if(localStorage.getItem("user_"+u)===p){
     localStorage.setItem("loggedUser",u);
     loadApp();
-  }else alert("Sai tài khoản hoặc mật khẩu");
+  }else alert("Sai tài khoản");
 }
 
-// Tải app sau login
 function loadApp(){
   let u=localStorage.getItem("loggedUser");
   if(u){
@@ -92,25 +175,21 @@ function loadApp(){
   }
 }
 
-// Đăng xuất
 function logout(){
   localStorage.removeItem("loggedUser");
   location.reload();
 }
 
-// Tính tiền vay
 function calc(){
   let m=parseInt(money.value)||0;
-  let interest=0.2;
-  let total=m+(m*interest);
+  let total=m+(m*0.2);
   result.innerHTML="Tổng tiền phải trả: "+total.toLocaleString()+" VNĐ";
 }
 
 function sendLoan(){
-  alert("Yêu cầu vay đã gửi!");
+  alert("Yêu cầu vay đã gửi thành công!");
 }
 
-// Kiểm tra login khi mở web
 loadApp();
 </script>
 
