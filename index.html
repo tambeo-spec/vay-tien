@@ -1,61 +1,44 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinLoan System</title>
-
-<style>
-body{font-family:Arial;background:#f4f6fb;margin:0}
-.header{background:#1d2671;color:#fff;padding:15px;text-align:center;font-weight:bold}
-.container{max-width:450px;margin:20px auto;padding:15px}
-.card{background:#fff;padding:15px;border-radius:12px;margin-bottom:15px;box-shadow:0 5px 15px rgba(0,0,0,0.08)}
-input,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
-button{background:#0072ff;color:#fff;border:none;font-weight:bold}
-.loan{background:#eef;padding:8px;border-radius:8px;margin:5px 0;font-size:14px}
-</style>
+  <meta charset="UTF-8">
+  <title>Hệ thống vay tiền</title>
+  <style>
+    body { font-family: Arial; padding:20px; max-width:500px; margin:auto }
+    input, button { width:100%; padding:10px; margin:5px 0 }
+    .box { border:1px solid #ccc; padding:10px; margin:10px 0 }
+  </style>
 </head>
 <body>
 
-<div class="header">FinLoan System</div>
-<div class="container">
+<h2>Đăng nhập / Đăng ký</h2>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Mật khẩu">
+<button onclick="register()">Đăng ký</button>
+<button onclick="login()">Đăng nhập</button>
+<button onclick="logout()">Đăng xuất</button>
 
-<div id="authBox" class="card">
-  <h3>Đăng nhập / Đăng ký</h3>
-  <input id="email" placeholder="Email">
-  <input id="pass" type="password" placeholder="Mật khẩu">
-  <button onclick="register()">Đăng ký</button>
-  <button onclick="login()">Đăng nhập</button>
-</div>
+<hr>
 
-<div id="userApp" style="display:none">
-  <div class="card">
-    <h3>Đăng ký khoản vay</h3>
-    <input id="money" type="number" placeholder="Số tiền vay">
-    <input type="file" id="cccd">
-    <button onclick="sendLoan()">Gửi yêu cầu</button>
-  </div>
+<h2>Gửi yêu cầu vay</h2>
+<input type="text" id="name" placeholder="Họ tên">
+<input type="number" id="money" placeholder="Số tiền vay">
+<input type="file" id="cccd">
+<button onclick="sendLoan()">Gửi hồ sơ</button>
 
-  <div class="card">
-    <h3>Lịch sử vay</h3>
-    <div id="history"></div>
-  </div>
-</div>
+<h3>Lịch sử vay</h3>
+<div id="history"></div>
 
-<div id="adminApp" style="display:none" class="card">
-  <h3>ADMIN - Danh sách khoản vay</h3>
-  <div id="allLoans"></div>
-</div>
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, where, getDocs } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-</div>
-
-<!-- FIREBASE CDN -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-
-<script>
 const firebaseConfig = {
   apiKey: "AIzaSyAMVMlleglI5teSX_wnH74MByezCeJAqqU",
   authDomain: "tambeo-b465a.firebaseapp.com",
@@ -65,82 +48,75 @@ const firebaseConfig = {
   appId: "1:756559820351:web:a30b3d8f9596ad5c1baa8a"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
-
-const ADMIN_EMAIL = "admin@gmail.com"; // đổi email admin
-
-function register(){
-  auth.createUserWithEmailAndPassword(email.value, pass.value)
+// REGISTER
+window.register = () => {
+  createUserWithEmailAndPassword(auth, email.value, password.value)
   .then(()=>alert("Đăng ký thành công"))
   .catch(e=>alert(e.message));
 }
 
-function login(){
-  auth.signInWithEmailAndPassword(email.value, pass.value)
+// LOGIN
+window.login = () => {
+  signInWithEmailAndPassword(auth, email.value, password.value)
+  .then(()=>alert("Đăng nhập thành công"))
   .catch(e=>alert(e.message));
 }
 
-auth.onAuthStateChanged(user=>{
-  if(user){
-    authBox.style.display="none";
-    userApp.style.display="block";
-    loadHistory(user);
+// LOGOUT
+window.logout = () => signOut(auth)
 
-    if(user.email===ADMIN_EMAIL){
-      adminApp.style.display="block";
-      loadAllLoans();
-    }
-  }
-});
+// GỬI HỒ SƠ VAY
+window.sendLoan = async () => {
+  const user = auth.currentUser;
+  if(!user) return alert("Bạn chưa đăng nhập");
 
-function sendLoan(){
-  let user = auth.currentUser;
-  let file = cccd.files[0];
-  if(!file){ alert("Vui lòng chọn ảnh CCCD"); return; }
+  const file = cccd.files[0];
+  if(!file) return alert("Chưa chọn ảnh CCCD");
 
-  let storageRef = storage.ref("cccd/" + Date.now() + file.name);
+  const storageRef = ref(storage, "cccd/" + user.uid + Date.now());
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
 
-  storageRef.put(file).then(()=>{
-    storageRef.getDownloadURL().then(url=>{
-      db.collection("loans").add({
-        uid:user.uid,
-        email:user.email,
-        money:money.value,
-        cccd:url,
-        time:new Date().toLocaleString()
-      }).then(()=>{
-        alert("Đã gửi yêu cầu vay!");
-        loadHistory(user);
-      });
-    });
+  await addDoc(collection(db, "loans"), {
+    uid: user.uid,
+    name: name.value,
+    money: Number(money.value),
+    cccd: url,
+    status: "Chờ duyệt",
+    time: new Date()
+  });
+
+  alert("Đã gửi hồ sơ!");
+  loadHistory();
+}
+
+// LOAD LỊCH SỬ
+async function loadHistory() {
+  const user = auth.currentUser;
+  if(!user) return;
+
+  const q = query(collection(db,"loans"), where("uid","==",user.uid));
+  const snap = await getDocs(q);
+
+  history.innerHTML = "";
+  snap.forEach(doc=>{
+    const d = doc.data();
+    history.innerHTML += `
+      <div class="box">
+        <b>${d.name}</b><br>
+        Số tiền: ${d.money} VND<br>
+        Trạng thái: <b>${d.status}</b>
+      </div>`;
   });
 }
 
-function loadHistory(user){
-  history.innerHTML="";
-  db.collection("loans").where("uid","==",user.uid).get()
-  .then(snap=>{
-    snap.forEach(doc=>{
-      let d=doc.data();
-      history.innerHTML+=`<div class="loan">${d.money} VNĐ - ${d.time}</div>`;
-    });
-  });
-}
+onAuthStateChanged(auth, u => { if(u) loadHistory(); });
 
-function loadAllLoans(){
-  allLoans.innerHTML="";
-  db.collection("loans").get().then(snap=>{
-    snap.forEach(doc=>{
-      let d=doc.data();
-      allLoans.innerHTML+=`<div class="loan">${d.email} vay ${d.money} - <a href="${d.cccd}" target="_blank">Xem CCCD</a></div>`;
-    });
-  });
-}
 </script>
-
 </body>
 </html>
