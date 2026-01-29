@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chọn khoản vay</title>
+<title>Vay tiền nhanh</title>
 
 <style>
 body{
@@ -21,57 +21,78 @@ body{
 .card{
   background:#ff4fa3;
   color:white;
-  padding:20px;
-  border-radius:18px;
+  padding:22px;
+  border-radius:22px;
   text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
 .amount{
-  font-size:26px;
+  font-size:28px;
   font-weight:bold;
-  margin:12px 0;
+  margin:10px 0 15px;
 }
-
+.withdraw-btn{
+  background:white;
+  color:#ff4fa3;
+  border:none;
+  padding:10px 20px;
+  border-radius:25px;
+  font-weight:bold;
+  margin-bottom:15px;
+  cursor:pointer;
+}
+.withdraw-btn:active{
+  transform:scale(0.96);
+}
 input[type=range]{
   width:100%;
-  margin-top:10px;
-}
-
-h3{
-  margin:20px 0 10px;
 }
 
 /* CÔNG TY */
 .company{
   background:white;
-  padding:14px;
-  border-radius:14px;
-  margin:10px 0;
+  padding:15px;
+  border-radius:16px;
+  margin:12px 0;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
   cursor:pointer;
-  font-size:14px;
+  font-size:15px;
 }
 .company:active{
   transform:scale(0.97);
+}
+
+/* BOX DƯỚI */
+.box{
+  background:white;
+  padding:15px;
+  border-radius:16px;
+  margin-top:15px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+.box h4{
+  margin:0 0 8px;
+}
+.item{
+  margin:6px 0;
+  font-size:14px;
 }
 </style>
 </head>
 
 <body>
-   <!-- KHUNG TIỀN -->
-    <div class="wallet">
-        <h3>Số tiền có thể rút</h3>
-        <div class="money" id="money">0 VND</div>
-        <button class="btn" onclick="rutTien()">Rút tiền</button>
-    </div>
 <div class="container">
 
+<!-- KHUNG TIỀN -->
 <div class="card">
-  <div>Chọn số tiền vay</div>
+  <div>Số tiền có thể rút</div>
   <div class="amount" id="moneyDisplay">500,000 VND</div>
+
+  <button class="withdraw-btn" onclick="rutTien()">Rút tiền</button>
+
   <input type="range" id="moneySlider" min="0" max="8" step="1" value="0">
 </div>
 
@@ -97,6 +118,21 @@ h3{
   <span>🏦 OCB Bank</span><span>Hạn mức cao</span>
 </div>
 
+<!-- HỖ TRỢ -->
+<div class="box">
+  <h4>Hỗ trợ khách hàng</h4>
+  <div class="item">📱 Zalo: <b>0123 456 789</b></div>
+  <div class="item">📘 Facebook: fb.com/hotro</div>
+</div>
+
+<!-- CÔNG TY -->
+<div class="box">
+  <h4>Thông tin công ty</h4>
+  <div class="item">📍 Địa chỉ: 123 Nguyễn Trãi, Hà Nội</div>
+  <div class="item">⏰ Làm việc: 8:00 – 18:00 (T2 - T7)</div>
+  <div class="item">✔ Hỗ trợ vay toàn quốc</div>
+</div>
+
 </div>
 
 <script>
@@ -112,31 +148,22 @@ function formatMoney(x){
   return x.toLocaleString('vi-VN') + " VND";
 }
 
-// Khi kéo thanh
 slider.oninput = function(){
   display.innerText = formatMoney(amounts[this.value]);
 }
 
-// Khi bấm công ty
+// Bấm công ty
 function goLoan(company){
   localStorage.setItem("loanCompany", company);
   localStorage.setItem("loanAmount", amounts[slider.value]);
   window.location.href = "step1.html";
 }
-  <!-- HỖ TRỢ -->
-    <div class="box">
-        <h4>Hỗ trợ khách hàng</h4>
-        <div class="item">📱 Zalo: <b>0123 456 789</b></div>
-        <div class="item">📘 Facebook: fb.com/hotro</div>
-    </div>
 
-    <!-- CÔNG TY -->
-    <div class="box">
-        <h4>Thông tin công ty</h4>
-        <div class="item">📍 Địa chỉ: 123 Nguyễn Trãi, Hà Nội</div>
-        <div class="item">⏰ Làm việc: 8:00 – 18:00 (T2 - T7)</div>
-        <div class="item">✔ Hỗ trợ vay toàn quốc</div>
-    </div>
+// Nút rút tiền
+function rutTien(){
+  localStorage.setItem("loanAmount", amounts[slider.value]);
+  window.location.href = "step1.html";
+}
 </script>
 
 </body>
