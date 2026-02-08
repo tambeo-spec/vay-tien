@@ -17,15 +17,7 @@ function makeGame(name, icon, level, link){
  g.innerHTML = `
    <img src="${icon}">
    <span>${name}</span>
- `;
- if(link) g.href = link;
- if(level && !allow(level)){
-   let l = document.createElement("div");
-   l.className="lock";
-   l.innerText="🔒";
-   g.appendChild(l);
- }
- return g;
+ 
 }
 
 function allow(level){
