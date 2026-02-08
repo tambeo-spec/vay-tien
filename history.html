@@ -1,0 +1,9 @@
+<ul id="list"></ul>
+<script>
+let u = localStorage.getItem("currentUser");
+let h = JSON.parse(localStorage.getItem("users"))[u].history;
+
+list.innerHTML = h.map(i =>
+  `<li>${i.time} | cược ${i.bet} | ${i.result} | +${i.win}</li>`
+).join("");
+</script>
