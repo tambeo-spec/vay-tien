@@ -2,81 +2,42 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chọn khoản vay</title>
-<style>
-body{font-family:Arial;background:#f2f3f7;margin:0;padding:15px}
-.card{background:#ff4fa3;color:white;padding:20px;border-radius:18px;text-align:center}
-.amount{font-size:26px;font-weight:bold;margin:10px 0}
-select,input[type=range]{width:100%;margin:8px 0;padding:8px;border-radius:8px;border:none}
-.box{background:white;margin-top:12px;padding:12px;border-radius:12px}
-button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;background:#ff4fa3;color:white;font-size:16px}
-</style>
+<title>Sảnh Game</title>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
+<div class="container">
+
 <div class="card">
-  <div>Chọn số tiền vay</div>
-  <div class="amount" id="moneyDisplay">500,000 VND</div>
-  <input type="range" id="moneySlider" min="0" max="8" step="1" value="0">
+<h2>🎮 SẢNH GAME</h2>
+👤 Người chơi: <b>Guest</b><br>
+💰 Xu: <b>1000</b>
 </div>
 
-<div class="box">
-  <label>Chọn kỳ hạn</label>
-  <select id="kyhan">
-    <option value="7">7 ngày</option>
-    <option value="14">14 ngày</option>
-    <option value="30">30 ngày</option>
-  </select>
-
-  <div>💸 Lãi: <span id="lai">0</span></div>
-  <div>🧾 Phí dịch vụ: <span id="phi">0</span></div>
-  <div>💰 Nhận về: <span id="nhan">0</span></div>
-  <div>📅 Ngày trả: <span id="ngaytra"></span></div>
-
-  <button onclick="tiepTheo()">Tiếp tục vay</button>
+<div class="card game">
+<div>
+<h3>🎲 Tài Xỉu</h3>
+<p>3 xúc xắc – ăn ngay</p>
+</div>
+<img src="https://cdn-icons-png.flaticon.com/512/1041/1041873.png">
 </div>
 
-<script>
-const amounts=[500000,1000000,1500000,2000000,4000000,8000000,12000000,30000000,50000000];
-const slider=document.getElementById("moneySlider");
-const display=document.getElementById("moneyDisplay");
+<a href="taixiu.html">
+<button>VÀO BÀN TÀI XỈU</button>
+</a>
 
-function format(x){return x.toLocaleString('vi-VN')+" VND"}
+<div class="card game">
+<div>
+<h3>🎰 Slot</h3>
+<p>Đang cập nhật</p>
+</div>
+<img src="https://cdn-icons-png.flaticon.com/512/814/814513.png">
+</div>
 
-function tinh(){
- let money=amounts[slider.value];
- let days=document.getElementById("kyhan").value;
+<button disabled>COMING SOON</button>
 
- let laiRate = days==7?0.1:days==14?0.15:0.2;
- let phiRate = 0.05;
-
- let lai=money*laiRate;
- let phi=money*phiRate;
- let nhan=money-lai-phi;
-
- let d=new Date();
- d.setDate(d.getDate()+Number(days));
-
- document.getElementById("lai").innerText=format(lai);
- document.getElementById("phi").innerText=format(phi);
- document.getElementById("nhan").innerText=format(nhan);
- document.getElementById("ngaytra").innerText=d.toLocaleDateString();
-}
-
-slider.oninput=function(){
- display.innerText=format(amounts[this.value]);
- tinh();
-}
-document.getElementById("kyhan").onchange=tinh;
-tinh();
-
-function tiepTheo(){
- localStorage.setItem("loanAmount", amounts[slider.value]);
- localStorage.setItem("kyHan", document.getElementById("kyhan").value);
- window.location.href="step1.html";
-}
-</script>
+</div>
 
 </body>
 </html>
