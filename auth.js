@@ -1,8 +1,17 @@
-function register() {
-  let u = user.value;
-  let p = pass.value;
+function getUsers() {
+  return JSON.parse(localStorage.getItem("users")) || {};
+}
 
-  let users = JSON.parse(localStorage.getItem("users")) || {};
+function saveUsers(u) {
+  localStorage.setItem("users", JSON.stringify(u));
+}
+
+function register() {
+  let u = user.value.trim();
+  let p = pass.value.trim();
+  if (!u || !p) return alert("Nhập đủ thông tin");
+
+  let users = getUsers();
   if (users[u]) return alert("Tài khoản tồn tại");
 
   users[u] = {
@@ -13,16 +22,19 @@ function register() {
     history: []
   };
 
-  localStorage.setItem("users", JSON.stringify(users));
+  saveUsers(users);
   alert("Đăng ký thành công");
   location.href = "index.html";
 }
 
 function login() {
-  let users = JSON.parse(localStorage.getItem("users")) || {};
-  if (!users[user.value] || users[user.value].pass !== pass.value)
-    return alert("Sai tài khoản");
+  let users = getUsers();
+  let u = user.value.trim();
+  let p = pass.value.trim();
 
-  localStorage.setItem("currentUser", user.value);
+  if (!users[u] || users[u].pass !== p)
+    return alert("Sai tài khoản hoặc mật khẩu");
+
+  localStorage.setItem("currentUser", u);
   location.href = "lobby.html";
 }
