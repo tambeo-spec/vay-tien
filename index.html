@@ -1,34 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sảnh Game</title>
-<link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <title>Sảnh Vòng Quay May Mắn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="header">🎮 SẢNH GAME | Xu: 1000</div>
+<div class="hall">
+  <h1>🎡 VÒNG QUAY MAY MẮN</h1>
 
-<div class="vip-bar">
-<span>👑 VIP: <b id="vipText"></b></span>
-<div class="vip-btn" onclick="upVip()">Nâng VIP</div>
+  <div class="wheel-box">
+    <div class="pointer">▼</div>
+    <div class="wheel" id="wheel"></div>
+  </div>
+
+  <button onclick="spin()">QUAY NGAY</button>
+  <p id="result"></p>
 </div>
 
-<div class="tabs">
-<div class="tab active" onclick="showTab(0)">🔥 Hot</div>
-<div class="tab" onclick="showTab(1)">🎲 Casino</div>
-<div class="tab" onclick="showTab(2)">🎰 Slot</div>
-<div class="tab" onclick="showTab(3)">📦 Khác</div>
-</div>
-
-<div class="container">
-<div class="games tabc"></div>
-<div class="games tabc" style="display:none"></div>
-<div class="games tabc" style="display:none"></div>
-<div class="games tabc" style="display:none"></div>
-</div>
-
-<script src="assets/lobby.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
