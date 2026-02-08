@@ -1,9 +1,13 @@
-<h2 id="info"></h2>
-<a href="spin.html">🎰 Vòng quay</a>
-<a href="wallet.html">💰 Ví</a>
+<h3 id="info"></h3>
+<a href="spin.html">🎡 Vòng quay</a>
 <a href="history.html">🧾 Lịch sử</a>
+<a href="wallet.html">💰 Ví</a>
+
 <script>
 let u = localStorage.getItem("currentUser");
+if (!u) location.href="index.html";
+
 let users = JSON.parse(localStorage.getItem("users"));
-info.innerText = `👤 ${u} | 💰 ${users[u].balance.toLocaleString()}`;
+info.innerText =
+`👤 ${u} | 💰 ${users[u].balance.toLocaleString()} | 🎟 ${users[u].spins}`;
 </script>
