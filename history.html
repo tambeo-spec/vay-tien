@@ -3,7 +3,9 @@
 let u = localStorage.getItem("currentUser");
 let h = JSON.parse(localStorage.getItem("users"))[u].history;
 
-list.innerHTML = h.map(i =>
-  `<li>${i.time} | cược ${i.bet} | ${i.result} | +${i.win}</li>`
-).join("");
+list.innerHTML = h.length
+? h.map(i =>
+ `<li>${i.time} | cược ${i.bet} | ${i.result} | +${i.win}</li>`
+).join("")
+: "<li>Chưa có lịch sử</li>";
 </script>
