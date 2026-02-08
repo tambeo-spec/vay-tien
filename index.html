@@ -7,37 +7,89 @@
 </head>
 <body>
 
+<div class="header">
+🎮 SẢNH GAME | Xu: 1000
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="show(0)">🔥 Hot</div>
+<div class="tab" onclick="show(1)">🎲 Casino</div>
+<div class="tab" onclick="show(2)">🎰 Slot</div>
+<div class="tab" onclick="show(3)">📦 Khác</div>
+</div>
+
 <div class="container">
 
-<div class="card">
-<h2>🎮 SẢNH GAME</h2>
-👤 Người chơi: <b>Guest</b><br>
-💰 Xu: <b>1000</b>
-</div>
-
-<div class="card game">
-<div>
-<h3>🎲 Tài Xỉu</h3>
-<p>3 xúc xắc – ăn ngay</p>
-</div>
+<!-- TAB 1 -->
+<div class="games tabc">
+<a href="taixiu.html" class="game">
 <img src="https://cdn-icons-png.flaticon.com/512/1041/1041873.png">
-</div>
-
-<a href="taixiu.html">
-<button>VÀO BÀN TÀI XỈU</button>
+<span>Tài Xỉu</span>
 </a>
 
-<div class="card game">
-<div>
-<h3>🎰 Slot</h3>
-<p>Đang cập nhật</p>
-</div>
-<img src="https://cdn-icons-png.flaticon.com/512/814/814513.png">
+<script>
+for(let i=1;i<=12;i++)
+ document.write(`
+ <div class="game">
+ <img src="https://cdn-icons-png.flaticon.com/512/814/814513.png">
+ <span>Game Hot ${i}</span>
+ </div>
+ `)
+</script>
 </div>
 
-<button disabled>COMING SOON</button>
+<!-- TAB 2 -->
+<div class="games tabc" style="display:none">
+<script>
+for(let i=1;i<=15;i++)
+ document.write(`
+ <div class="game">
+ <img src="https://cdn-icons-png.flaticon.com/512/168/168882.png">
+ <span>Casino ${i}</span>
+ </div>
+ `)
+</script>
+</div>
+
+<!-- TAB 3 -->
+<div class="games tabc" style="display:none">
+<script>
+for(let i=1;i<=15;i++)
+ document.write(`
+ <div class="game">
+ <img src="https://cdn-icons-png.flaticon.com/512/814/814513.png">
+ <span>Slot ${i}</span>
+ </div>
+ `)
+</script>
+</div>
+
+<!-- TAB 4 -->
+<div class="games tabc" style="display:none">
+<script>
+for(let i=1;i<=7;i++)
+ document.write(`
+ <div class="game">
+ <img src="https://cdn-icons-png.flaticon.com/512/565/565547.png">
+ <span>Khác ${i}</span>
+ </div>
+ `)
+</script>
+</div>
 
 </div>
+
+<script>
+let tabs=document.querySelectorAll(".tab");
+let tabc=document.querySelectorAll(".tabc");
+
+function show(i){
+ tabs.forEach(t=>t.classList.remove("active"));
+ tabc.forEach(t=>t.style.display="none");
+ tabs[i].classList.add("active");
+ tabc[i].style.display="grid";
+}
+</script>
 
 </body>
 </html>
